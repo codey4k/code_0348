@@ -21,13 +21,14 @@ class Server:
 
         while True:
             data = client.recv(1024)
-            print "conectado" + str(datos)
+            print "conectado" + str(data)
             print("RECIBIDO: %s" % data)
             client.sendall("-- Recibido --")
             # server.send("-- Recibido --")
 
 def main():
     server = Server("0.0.0.0", 3540)
+    server.mount()
     
     
 if __name__ == "__main__":
