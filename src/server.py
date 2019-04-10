@@ -16,16 +16,23 @@ class Server:
         server.bind(data_conection)
         server.listen(max_connect)
         print ("Esperando conecciones en %s : %s" % (self.ip, self.port) )
-        client, direction = server.accept()
+        server, direction = server.accept()
         print("Conexion establecida con %s:%s" % (direction[0], direction[1]))
 
         while True:
-            data = client.recv(1024)
-            print "conectado" + str(data)
-            print("RECIBIDO: %s" % data)
-            client.sendall("-- Recibido --")
-            # server.send("-- Recibido --")
-
+            try:
+                data = server.recv(4096)
+                print "conectado %s %s" % (direction[0], direction[1])
+                print("\x1b[1;32m" + "RECIBIDO: %s" % data)
+                instruccion = raw_input("> ")
+                server.sendall(instruccion)
+                if instruccion == "exit":
+                    break
+                    if data == "":
+                        print "no hay respuesta"
+            except:
+                pass
+           
 def main():
     server = Server("0.0.0.0", 3540)
     server.mount()
